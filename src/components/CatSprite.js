@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function CatSprite() {
+export const CatSprite = React.forwardRef((props, ref) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,6 +9,7 @@ export default function CatSprite() {
       viewBox="0.3210171699523926 0.3000000357627869 95.17898101806641 100.04156036376953"
       version="1.1"
       xmlSpace="preserve"
+      ref={ref}
     >
       <g>
         <g id="Page-1" stroke="none" fillRule="evenodd">
@@ -181,4 +182,4 @@ export default function CatSprite() {
       </g>
     </svg>
   );
-}
+});

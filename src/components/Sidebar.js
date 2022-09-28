@@ -4,11 +4,11 @@ import ActionButton from "./ActionButton";
 
 export default function Sidebar(props) {
 
-	const { setDraggedElement, activeActions, setActiveActions, draggedElement, dragParent, setDragParent } = props;
+	const { draggedElement, setDraggedElement, activeActions, setActiveActions, dragParent, setDragParent } = props;
 	
-	const handleDragEnd = (e) => {
-		if(draggedElement && dragParent == "actionarea") {
-			let tmpActions = activeActions.filter(action => action.key != draggedElement);
+	const handleDragEnd = () => {
+		if(draggedElement != "undefined" && dragParent == "actionarea") {
+			let tmpActions = activeActions.filter(action => Number(action.key) != draggedElement);
 			setActiveActions(tmpActions)
 		}
 	}
@@ -24,7 +24,12 @@ export default function Sidebar(props) {
 				<div key={action.name}>
 					<div className="font-bold" key={index}>{action.name}</div>
 					{action.items.map((item, indx) => (
-						<ActionButton item={item} color={action.color} setDraggedElement={setDraggedElement} setDragParent={setDragParent} key={indx}/>
+						<ActionButton
+							item={item}
+							color={action.color}
+							setDraggedElement={setDraggedElement}
+							setDragParent={setDragParent}
+							key={indx}/>
 					))}
 				</div> 
 			))}

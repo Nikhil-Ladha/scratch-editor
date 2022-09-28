@@ -7,9 +7,12 @@ export default function App() {
 
   const [ draggedElement, setDraggedElement ] = useState();
   const [ dragParent, setDragParent ] = useState();
+  const [ actionList, updateActionList ] = useState([]);
   const [ activeActions, setActiveActions ] = useState([]);
   const [ canvasContext, setCanvasContext ] = useState();
-  const [ initalSpriteStyle, updateSpriteStyle ] = useState({});
+  const [ currentSpriteStyle, updateSpriteStyle ] = useState({});
+  const [ blockCounter, updateBlockCounter ] = useState(0);
+  const [ spriteImg, updateSpriteImg ] = useState();
 
   return (
     <div className="bg-blue-100 font-sans">
@@ -28,14 +31,26 @@ export default function App() {
             draggedElement={draggedElement}
             activeActions={activeActions}
             setActiveActions={setActiveActions}
-            canvasContext={canvasContext}
-            updateSpriteStyle={updateSpriteStyle}
             dragParent={dragParent}
             setDragParent={setDragParent}
+            blockCounter={blockCounter}
+            updateBlockCounter={updateBlockCounter}
+            canvasContext={canvasContext}
+            updateSpriteStyle={updateSpriteStyle}
+            updateActionList={updateActionList}
           />
         </div>
         <div className="w-1/3 h-screen overflow-hidden flex flex-row bg-white border-t border-l border-gray-200 rounded-tl-xl ml-2">
-          <PreviewArea setCanvasContext={setCanvasContext} updateSpriteStyle={updateSpriteStyle} />
+          <PreviewArea
+            canvasContext={canvasContext}
+            setCanvasContext={setCanvasContext}
+            currentSpriteStyle={currentSpriteStyle}
+            updateSpriteStyle={updateSpriteStyle}
+            spriteImg={spriteImg}
+            updateSpriteImg={updateSpriteImg}
+            actionList={actionList}
+            updateActionList={updateActionList}
+          />
         </div>
       </div>
     </div>

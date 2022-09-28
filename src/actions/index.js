@@ -7,11 +7,11 @@ export const actions = [
 		"color": "yellow",
 		"items": [
 			{
-				"id": "event1",
+				"id": "when_stride_clicked",
 				"text": ["When", <Icon name="flag" size={15} className="text-green-600 mx-2" key={"event1"}/>, "clicked"]
 			},
 			{
-				"id": "event2",
+				"id": "when_self_clicked",
 				"text": "When this sprite clicked",
 			}
 		]
@@ -21,104 +21,29 @@ export const actions = [
 		"color": "blue",
 		"items": [
 			{
-				"id": "motion1",
-				"text": "Move 10 steps",
+				"id": "move_10_steps",
+				"text": ["Move", <input type="number" defaultValue={10} key="move_step"/>, "steps"],
 			},
 			{
-				"id": "motion2",
-				"text": ["Turn", <Icon name="undo" size={15} className="text-white mx-2" key={"motion2"}/>, "15 degrees"]
+				"id": "turn_anticlock",
+				"text": ["Turn", <Icon name="undo" size={15} className="text-white mx-2" key={"motion2"}/>, <input type="number" defaultValue={15} key="turn_anticlock"/>, "degrees"]
 			},
 			{
-				"id": "motion3",
-				"text": ["Turn", <Icon name="redo" size={15} className="text-white mx-2" key={"motion3"}/>, "15 degrees"]
+				"id": "turn_clock",
+				"text": ["Turn", <Icon name="redo" size={15} className="text-white mx-2" key={"motion3"}/>, <input type="number" defaultValue={15} key="turn_clock"/>, "degrees"]
+			},
+			{
+				"id": "random_position",
+				"text": ["Go to random position"]
+			},
+			{
+				"id": "goto_position",
+				"text": ["Go to x:", <input type="number" defaultValue={100} key="goto_position-x"/>, "y:", <input type="number" defaultValue={100} key="goto_position-y"/>]
+			},
+			{
+				"id": "point_direction",
+				"text": ["Point in direction", <input type="number" defaultValue={90} key="point_direction"/>]
 			}
 		]
 	}
 ];
-
-export const toolboxCategories = {
-    kind: "categoryToolbox",
-    contents: [
-			//   {
-			//     kind: "label",
-			//     text: "Events",
-			//   },
-			{
-				kind: "category",
-				name: "Events",
-				colour: "yellow",
-				contents: [
-					{
-						kind: "block",
-						type: "when_stride_clicked",
-						colour: "yellow",
-					},
-					// {
-					// 	kind: "block",
-					// 	type: "when_sprite_clicked",
-					// 	colour: "yellow",
-					// }
-				]
-			}
-    //   {
-    //     kind: "block",
-    //     name: "When stride clicked",
-    //     colour: "yellow",
-    //   }
-    //   {
-    //     kind: "block",
-    //     name: "When stride clicked",
-    //     colour: "yellow",
-    //   }
-    //   {
-    //     kind: "block",
-    //     name: "When stride clicked",
-    //     colour: "yellow",
-    //   }
-    //     contents: [
-    //       {
-    //         kind: "block",
-    //         type: "controls_if",
-    //       },
-    //       {
-    //         kind: "block",
-    //         type: "logic_compare",
-    //       },
-    //       {
-    //         kind: "block",
-    //         type: "when_stride_clicked"
-    //       }
-    //     ],
-    //   },
-    //   {
-    //     kind: "category",
-    //     name: "Math",
-    //     colour: "#5CA65C",
-    //     contents: [
-    //       {
-    //         kind: "block",
-    //         type: "math_round",
-    //       },
-    //       {
-    //         kind: "block",
-    //         type: "math_number",
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     kind: "category",
-    //     name: "Custom",
-    //     colour: "#5CA699",
-    //     contents: [
-    //       {
-    //         kind: "block",
-    //         type: "new_boundary_function",
-    //       },
-    //       {
-    //         kind: "block",
-    //         type: "return",
-    //       },
-    //     ],
-    //   },
-    ],
-  };

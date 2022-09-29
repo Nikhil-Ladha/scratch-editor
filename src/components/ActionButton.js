@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ActionButton(props) {
 
-	const { item, color, setDraggedElement, setDragParent, dataId, canvasContext, updateSpriteStyle, updateActionList } = props;
+	const { item, color, setDraggedElement, setDragParent, dataId, canvasContext, updateSpriteStyle, updateActionList, topDist, leftDist } = props;
 
 	const handleDragStart = (e) => {
 		const targetElement = e.target;
@@ -11,13 +11,13 @@ export default function ActionButton(props) {
 			setDraggedElement(item.id);
 		} else {
 			setDragParent("actionarea");
-			setDraggedElement(dataId);
+			setDraggedElement(`${item.id}${dataId}`);
 		}
 	}
 
 	const handleBlockClick = (e) => {
 		if(e.target.parentNode.id == "actionarea") {
-			canvasContext.clearRect(0, 0, 400, 800);
+			canvasContext.clearRect(0, 0, 600, 800);
 			let val = 0, x=0, y=0;
 			switch(e.target.id) {
 				case "move_10_steps":
@@ -57,7 +57,7 @@ export default function ActionButton(props) {
 					);
 					break;
 				case "random_position":
-					x = Math.floor(Math.random() * 401);
+					x = Math.floor(Math.random() * 601);
 					y = Math.floor(Math.random() * 801);
 					updateActionList(prevState => [...prevState, "random_position"]);
 					updateSpriteStyle(
@@ -96,6 +96,30 @@ export default function ActionButton(props) {
 						)
 					);
 					break;
+				case "set_x":
+					updateActionList(prevState => [...prevState, "set_x"]);
+					val = Number(e.target.firstElementChild.value);
+					updateSpriteStyle(
+						prevState => (
+							{
+								...prevState,
+								"x": val
+							}
+						)
+					);
+					break;
+				case "set_y":
+					updateActionList(prevState => [...prevState, "set_y"]);
+					val = Number(e.target.firstElementChild.value);
+					updateSpriteStyle(
+						prevState => (
+							{
+								...prevState,
+								"y": val
+							}
+						)
+					);
+					break;
 			}
 		}
 	}
@@ -103,10 +127,11 @@ export default function ActionButton(props) {
 	return (
 		<div
 			id={item.id}
-			className={`flex w-max flex-row flex-wrap bg-${color}-500 text-white px-2 py-1 my-2 text-sm items-center rounded-md cursor-pointer`}
+			className={`flex w-max flex-row flex-wrap bg-${color}-500 text-white px-2 py-1 my-2 text-sm items-center rounded-md ${topDist || leftDist ? 'absolute' : ''} cursor-pointer`}
 			draggable="true"
 			onDragStart={handleDragStart}
 			onClick={handleBlockClick}
+			style={{top: topDist, left: leftDist}}
 		>
 			{item.text}
 		</div>

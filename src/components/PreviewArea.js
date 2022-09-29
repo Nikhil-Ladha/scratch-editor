@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import CatSpriteImg from "../assets/sprite1.svg";
+import CatSpriteImg from "../assets/sprite.svg";
 
 export default function PreviewArea(props) {
 
@@ -33,20 +33,24 @@ export default function PreviewArea(props) {
         case "move_10_steps":
         case "random_position":
         case "goto_position":
+        case "set_x":
+        case "set_y":
           canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]);
           break;
         case "turn_anticlock":
         case "turn_clock":
         case "point_direction":
-          console.log(currentSpriteStyle)
-          canvasContext.save();
-          if(action == "point_direction")
+          if(action == "point_direction") {
+            canvasContext.save();
             canvasContext.reset();
+          }
           canvasContext.translate(originX, originY);
 					canvasContext.rotate(currentSpriteStyle["angle"] * Math.PI / 180);
           canvasContext.translate(-originX, -originY);
           canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]);
-          canvasContext.restore();
+          if(action == "point_direction") {
+            canvasContext.restore();
+          }
 					break;
       }
     }

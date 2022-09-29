@@ -43,6 +43,14 @@ export const actions = [
 			{
 				"id": "point_direction",
 				"text": ["Point in direction", <input type="number" defaultValue={90} key="point_direction"/>]
+			},
+			{
+				"id": "set_x",
+				"text": ["Set x to", <input type="number" defaultValue={100} key="set_x"/>]
+			},
+			{
+				"id": "set_y",
+				"text": ["Set y to", <input type="number" defaultValue={100} key="set_y"/>]
 			}
 		]
 	}

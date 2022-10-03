@@ -19,7 +19,7 @@ export default function PreviewArea(props) {
       "w": 60,
       "h": 75,
       "angle": 0, // in degrees
-      "size": 1
+      "show": true
     });
     updateSpriteImg(img);
     setCanvasContext(context);
@@ -35,7 +35,12 @@ export default function PreviewArea(props) {
         case "goto_position":
         case "set_x":
         case "set_y":
-          canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]);
+        case "show":
+        case "change_size":
+        case "set_size":
+          currentSpriteStyle["show"] ? canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]) : "";
+          break;
+        case "hide":
           break;
         case "turn_anticlock":
         case "turn_clock":
@@ -47,7 +52,7 @@ export default function PreviewArea(props) {
           canvasContext.translate(originX, originY);
 					canvasContext.rotate(currentSpriteStyle["angle"] * Math.PI / 180);
           canvasContext.translate(-originX, -originY);
-          canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]);
+          currentSpriteStyle["show"] ? canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]) : "";
           if(action == "point_direction") {
             canvasContext.restore();
           }

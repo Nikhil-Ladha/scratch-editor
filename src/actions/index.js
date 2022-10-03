@@ -2,20 +2,20 @@ import React from "react";
 import Icon from "../components/Icon";
 
 export const actions = [
-	{
-		"name": "Events",
-		"color": "yellow",
-		"items": [
-			{
-				"id": "when_stride_clicked",
-				"text": ["When", <Icon name="flag" size={15} className="text-green-600 mx-2" key={"event1"}/>, "clicked"]
-			},
-			{
-				"id": "when_self_clicked",
-				"text": "When this sprite clicked",
-			}
-		]
-	},
+	// {
+	// 	"name": "Events",
+	// 	"color": "yellow",
+	// 	"items": [
+	// 		{
+	// 			"id": "when_stride_clicked",
+	// 			"text": ["When", <Icon name="flag" size={15} className="text-green-600 mx-2" key={"event1"}/>, "clicked"]
+	// 		},
+	// 		{
+	// 			"id": "when_self_clicked",
+	// 			"text": "When this sprite clicked",
+	// 		}
+	// 	]
+	// },
 	{
 		"name": "Motion",
 		"color": "blue",
@@ -51,6 +51,28 @@ export const actions = [
 			{
 				"id": "set_y",
 				"text": ["Set y to", <input type="number" defaultValue={100} key="set_y"/>]
+			}
+		]
+	},
+	{
+		"name": "Looks",
+		"color": "purple",
+		"items": [
+			{
+				"id": "change_size",
+				"text": ["Change size by", <input type="number" defaultValue={10} key="change_size"/>],
+			},
+			{
+				"id": "set_size",
+				"text": ["Set size to", <input type="number" defaultValue={100} key="set_size"/>, "%"],
+			},
+			{
+				"id": "show",
+				"text": ["Show"]
+			},
+			{
+				"id": "hide",
+				"text": ["Hide"]
 			}
 		]
 	}

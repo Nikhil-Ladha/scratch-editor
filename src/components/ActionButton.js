@@ -120,6 +120,54 @@ export default function ActionButton(props) {
 						)
 					);
 					break;
+				case "change_size":
+					updateActionList(prevState => [...prevState, "change_size"]);
+					val = Number(e.target.firstElementChild.value);
+					updateSpriteStyle(
+						prevState => (
+							{
+								...prevState,
+								"w": prevState["w"] + val,
+								"h": prevState["h"] + val
+							}
+						)
+					);
+					break;
+				case "set_size":
+					updateActionList(prevState => [...prevState, "set_size"]);
+					val = Number(e.target.firstElementChild.value);
+					updateSpriteStyle(
+						prevState => (
+							{
+								...prevState,
+								"w": (60*val)/100,
+								"h": (75*val)/100,
+							}
+						)
+					);
+					break;
+				case "show":
+					updateActionList(prevState => [...prevState, "show"]);
+					updateSpriteStyle(
+						prevState => (
+							{
+								...prevState,
+								"show": true
+							}
+						)
+					);
+					break;
+				case "hide":
+					updateActionList(prevState => [...prevState, "hide"]);
+					updateSpriteStyle(
+						prevState => (
+							{
+								...prevState,
+								"show": false
+							}
+						)
+					);
+					break;
 			}
 		}
 	}

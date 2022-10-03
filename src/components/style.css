@@ -28,3 +28,8 @@ input[type=number] {
   --tw-bg-opacity: 1;
   background-color: rgba(245, 158, 11, var(--tw-bg-opacity));
 }
+
+.bg-purple-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgba(139, 92, 246, var(--tw-bg-opacity));
+}

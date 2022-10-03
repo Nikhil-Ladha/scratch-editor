@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import CatSpriteImg from "../assets/sprite.svg";
+import Icon from "./Icon";
 
 export default function PreviewArea(props) {
 
@@ -19,7 +20,8 @@ export default function PreviewArea(props) {
       "w": 60,
       "h": 75,
       "angle": 0, // in degrees
-      "show": true
+      "show": true,
+      "clones": []
     });
     updateSpriteImg(img);
     setCanvasContext(context);
@@ -30,7 +32,7 @@ export default function PreviewArea(props) {
       let originX = currentSpriteStyle["w"]/2 + currentSpriteStyle["x"];
       let originY = currentSpriteStyle["h"]/2 + currentSpriteStyle["y"];
       switch(action) {
-        case "move_10_steps":
+        case "move_steps":
         case "random_position":
         case "goto_position":
         case "set_x":
@@ -38,7 +40,16 @@ export default function PreviewArea(props) {
         case "show":
         case "change_size":
         case "set_size":
-          currentSpriteStyle["show"] ? canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]) : "";
+        case "create_clone":
+        case "delete_clone":
+          if(currentSpriteStyle["show"]) {
+            canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]);
+            if(currentSpriteStyle["clones"].length) {
+              for(let i=0; i<currentSpriteStyle["clones"].length; i++) {
+                canvasContext.drawImage(spriteImg, currentSpriteStyle["clones"][i]["x"], currentSpriteStyle["clones"][i]["y"], currentSpriteStyle["clones"][i]["w"], currentSpriteStyle["clones"][i]["h"]);
+              }
+            }
+          }
           break;
         case "hide":
           break;
@@ -63,9 +74,14 @@ export default function PreviewArea(props) {
   }, [currentSpriteStyle]);
 
   return (
-    <div className="w-full flex-none h-full overflow-y-auto p-2">
-      <canvas ref={canvasRef} width="400" height="800" />
-      <img src={CatSpriteImg} width="50" height="50" ref={spriteImage} className="hidden"/>
-    </div>
+    <>
+      <div className="p-1 h-8 stride">
+        <Icon name="flag" size={25} className="text-green-600 mx-2"/>
+      </div>
+      <div className="w-full flex-none h-full overflow-y-auto p-2">
+        <canvas ref={canvasRef} width="400" height="800" />
+        <img src={CatSpriteImg} width="50" height="50" ref={spriteImage} className="hidden"/>
+      </div>
+    </>
   );
 }

@@ -16,7 +16,7 @@ export default function Sidebar(props) {
 	return (
 		<div
 			id="sidebar"
-			className="w-60 flex-none h-full overflow-y-auto flex flex-col items-start p-2 border-r border-gray-200"
+			className="w-65 flex-none h-full overflow-y-auto flex flex-col items-start p-2 border-r border-gray-200"
 			onDragOver={(e) => e.preventDefault()}
       onDrop={handleDragEnd}
 		>

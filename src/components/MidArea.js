@@ -10,10 +10,37 @@ export default function MidArea(props) {
     updateSpriteStyle, updateActionList
   } = props;
 
+  const findClosestBlock = (top, left) => {
+		const midArea = document.getElementById("actionarea");
+    let closestY = top, closestX = left;
+		for(let i=0; i<midArea.childNodes.length; i++) {
+      let tmpY = Number(midArea.childNodes[i].style.top.split('px')[0]);
+      let tmpX = Number(midArea.childNodes[i].style.left.split('px')[0]);
+      console.log(tmpY, top, tmpX, left, midArea.childNodes[i].key, draggedElement);
+      if(tmpY - top <= 28 && tmpY - top >= 0) {    // 28px is the height of each block
+        closestY = tmpY - 29;   // Allow breathing space of 1px
+        closestX = tmpX;
+        console.log("Check1");
+        break;
+      } else if(top - tmpY <= 28 && top - tmpY >= 0) {
+        closestY = top - 27;
+        closestX = tmpX;
+        console.log("Check2");
+        break;
+      }
+    }
+    console.log("Closest ret", closestY, closestX);
+
+    return [closestY, closestX];
+	}
+
   const handleDragEnd = (e) => {
     if(draggedElement != "undefined" && dragParent != "actionarea") {
       let leftDist = e.clientX - e.target.offsetLeft;
       let topDist = e.clientY - e.target.offsetTop;
+      // let updatedDist = findClosestBlock(topDist, leftDist);
+      // topDist = updatedDist[0];
+      // leftDist = updatedDist[1];
       let actionItem = "", actionItemColor = "";
       for(let action of actions) {
         for(let item of action.items) {
@@ -47,17 +74,21 @@ export default function MidArea(props) {
       )
       updateBlockCounter(prevState => prevState+1);
     } else {       // Reposition block
-        let tmpActions = [...activeActions];
+        let tmpActions = [];
         let tmpItem = null, tmpColor = null, tmpDataId = null;
         let leftDist = e.clientX - e.target.offsetLeft;
         let topDist = e.clientY - e.target.offsetTop;
-        for(let action of tmpActions) {
+        // let updatedDist = findClosestBlock(topDist, leftDist);
+        // topDist = updatedDist[0];
+        // leftDist = updatedDist[1];
+        // console.log("End res", topDist, leftDist)
+        for(let action of activeActions) {
           if(`${action.props.item.id}${action.props.dataId}` === draggedElement) {
             tmpItem = action.props.item;
             tmpColor = action.props.color;
             tmpDataId = action.props.dataId;
-            tmpActions.pop(action);
-            break;
+          } else {
+            tmpActions.push(action)
           }
         }
         setActiveActions([...tmpActions,

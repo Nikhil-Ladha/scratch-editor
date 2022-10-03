@@ -20,7 +20,43 @@ export default function ActionButton(props) {
 			canvasContext.clearRect(0, 0, 600, 800);
 			let val = 0, x=0, y=0;
 			switch(e.target.id) {
-				case "move_10_steps":
+				case "when_stride_clicked":
+					updateActionList(prevState => [...prevState, "when_stride_clicked"]);
+					// val = Number(e.target.firstElementChild.value);
+					// updateSpriteStyle(
+					// 	prevState => (
+					// 		{
+					// 			...prevState,
+					// 			"x": prevState["x"] + val
+					// 		}
+					// 	)
+					// );
+					break;
+				case "when_self_clicked":
+					updateActionList(prevState => [...prevState, "when_self_clicked"]);
+					// val = Number(e.target.firstElementChild.value);
+					// updateSpriteStyle(
+					// 	prevState => (
+					// 		{
+					// 			...prevState,
+					// 			"x": prevState["x"] + val
+					// 		}
+					// 	)
+					// );
+					break;
+				case "when_key_pressed":
+					updateActionList(prevState => [...prevState, "when_key_pressed"]);
+					// val = Number(e.target.firstElementChild.value);
+					// updateSpriteStyle(
+					// 	prevState => (
+					// 		{
+					// 			...prevState,
+					// 			"x": prevState["x"] + val
+					// 		}
+					// 	)
+					// );
+					break;
+				case "move_steps":
 					updateActionList(prevState => [...prevState, "move_10_steps"]);
 					val = Number(e.target.firstElementChild.value);
 					updateSpriteStyle(
@@ -164,6 +200,28 @@ export default function ActionButton(props) {
 							{
 								...prevState,
 								"show": false
+							}
+						)
+					);
+					break;
+				case "create_clone":
+					updateActionList(prevState => [...prevState, "create_clone"]);
+					updateSpriteStyle(
+						prevState => (
+							{
+								...prevState,
+								"clones": [...prevState["clones"], prevState]
+							}
+						)
+					);
+					break;
+				case "delete_clone":
+					updateActionList(prevState => [...prevState, "delete_clone"]);
+					updateSpriteStyle(
+						prevState => (
+							{
+								...prevState,
+								"clones": prevState["clones"].length ? prevState["clones"].splice(prevState["clones"].length - 1) : []
 							}
 						)
 					);

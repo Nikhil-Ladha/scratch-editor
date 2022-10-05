@@ -1,34 +1,14 @@
 import React from "react";
 import Icon from "../components/Icon";
 
-export const actions = [
+export const actionsData = [
 	{
 		"name": "Events",
 		"color": "yellow",
 		"items": [
 			{
-				"id": "when_stride_clicked",
-				"text": ["When", <Icon name="flag" size={15} className="text-green-600 mx-2" key="when_stride_clicked"/>, "clicked"]
-			},
-			{
-				"id": "when_self_clicked",
+				"id": "event_self_clicked",
 				"text": "When this sprite clicked",
-			},
-			{
-				"id": "when_key_pressed",
-				"text": ["When",
-						 <select selected="spac" key="key_pressed">
-							<option value="32">space</option>
-							<option value="37">arrow left</option>
-							<option value="38">arrow right</option>
-							<option value="39">arrow up</option>
-							<option value="40">arrow down</option>
-							<option value="65">a</option>
-							<option value="66">b</option>
-							<option value="67">c</option>
-						 </select>,
-						 "key pressed"
-						]
 			}
 		]
 	},
@@ -107,19 +87,7 @@ export const actions = [
 			{
 				"id": "wait_n_secs",
 				"text": ["Wait", <input type="number" defaultValue={1} key="wait_n_secs"/>, "seconds"]
-			},
-			// {
-			// 	"id": "repeat_n_times",
-			// 	"text": ["Repeat", <input type="number" defaultValue={100} key="set_size"/>, "%"],
-			// },
-			// {
-			// 	"id": "show",
-			// 	"text": ["Show"]
-			// },
-			// {
-			// 	"id": "hide",
-			// 	"text": ["Hide"]
-			// }
+			}
 		]
 	}
 ];

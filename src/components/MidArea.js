@@ -1,35 +1,51 @@
-import React from "react";
-import { actions } from "../actions";
+import React, { useEffect } from "react";
+import { actionsData } from "../actions";
 import ActionButton from "./ActionButton";
+import { useDispatch } from "react-redux";
+import { updateActiveActions } from "../actions/actionSlice";
 import "./style.css";
 
 export default function MidArea(props) {
 
   const { 
-    setDraggedElement, draggedElement, activeActions, setActiveActions, dragParent, setDragParent, blockCounter, updateBlockCounter, canvasContext,
+    setDraggedElement, draggedElement, activeActions, setActiveActions, dragParent, setDragParent, blockCounter, updateBlockCounter,
     updateSpriteStyle, updateActionList
   } = props;
 
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		let midArea = document.querySelector("#actionarea").children;
+
+		let tmp = [];
+		for(let block of midArea) {
+			tmp.push({
+				"id": block.id,
+				"topDist": Number(block.style.top.split('px')[0]),
+				"children": block.children
+			})
+		}
+		dispatch(updateActiveActions(tmp));
+
+	}, [activeActions])
+
   const findClosestBlock = (top, left) => {
-		const midArea = document.getElementById("actionarea");
     let closestY = top, closestX = left;
-		for(let i=0; i<midArea.childNodes.length; i++) {
-      let tmpY = Number(midArea.childNodes[i].style.top.split('px')[0]);
-      let tmpX = Number(midArea.childNodes[i].style.left.split('px')[0]);
-      console.log(tmpY, top, tmpX, left, midArea.childNodes[i].key, draggedElement);
-      if(tmpY - top <= 28 && tmpY - top >= 0) {    // 28px is the height of each block
-        closestY = tmpY - 29;   // Allow breathing space of 1px
-        closestX = tmpX;
-        console.log("Check1");
-        break;
-      } else if(top - tmpY <= 28 && top - tmpY >= 0) {
-        closestY = top - 27;
-        closestX = tmpX;
-        console.log("Check2");
-        break;
+		for(let action of activeActions) {
+      let tmpY = action.props.topDist;
+      let tmpX = action.props.leftDist;
+      if(`${action.props.item.id}${action.props.dataId}` != draggedElement) {
+        if(tmpY - top <= 50 && tmpY - top >= 0 && (!action.props.item.id.includes("event"))) {    // 50px, as it's bit less than 2x of block height
+          closestY = tmpY - 29;   // Allow breathing space of 1px
+          closestX = tmpX;
+          break;
+        } else if(top - tmpY <= 50 && top - tmpY >= 0 && (!draggedElement.includes("event"))) {
+          closestY = tmpY + 29;
+          closestX = tmpX;
+          break;
+        }
       }
     }
-    console.log("Closest ret", closestY, closestX);
 
     return [closestY, closestX];
 	}
@@ -38,11 +54,11 @@ export default function MidArea(props) {
     if(draggedElement != "undefined" && dragParent != "actionarea") {
       let leftDist = e.clientX - e.target.offsetLeft;
       let topDist = e.clientY - e.target.offsetTop;
-      // let updatedDist = findClosestBlock(topDist, leftDist);
-      // topDist = updatedDist[0];
-      // leftDist = updatedDist[1];
+      let updatedDist = findClosestBlock(topDist, leftDist);
+      topDist = updatedDist[0];
+      leftDist = updatedDist[1];
       let actionItem = "", actionItemColor = "";
-      for(let action of actions) {
+      for(let action of actionsData) {
         for(let item of action.items) {
           if(item.id === draggedElement) {
             actionItem = item;
@@ -56,32 +72,32 @@ export default function MidArea(props) {
         }
       }
 
-      setActiveActions(
-        prevState => [...prevState,
-                      <ActionButton
-                        item={actionItem}
-                        color={actionItemColor}
-                        setDraggedElement={setDraggedElement}
-                        setDragParent={setDragParent}
-                        dataId={blockCounter}
-                        canvasContext={canvasContext}
-                        updateSpriteStyle={updateSpriteStyle}
-                        updateActionList={updateActionList}
-                        topDist={topDist}
-                        leftDist={leftDist}
-                        key={blockCounter} />
-                    ]
-      )
-      updateBlockCounter(prevState => prevState+1);
+			let tmpActions = [
+				...activeActions,
+				<ActionButton
+					item={actionItem}
+					color={actionItemColor}
+					setDraggedElement={setDraggedElement}
+					setDragParent={setDragParent}
+					dataId={blockCounter}
+					updateSpriteStyle={updateSpriteStyle}
+					updateActionList={updateActionList}
+					topDist={topDist}
+					leftDist={leftDist}
+					key={blockCounter} />
+			];
+
+			setActiveActions(tmpActions);
+      updateBlockCounter(prevState => prevState + 1);
+
     } else {       // Reposition block
         let tmpActions = [];
         let tmpItem = null, tmpColor = null, tmpDataId = null;
         let leftDist = e.clientX - e.target.offsetLeft;
         let topDist = e.clientY - e.target.offsetTop;
-        // let updatedDist = findClosestBlock(topDist, leftDist);
-        // topDist = updatedDist[0];
-        // leftDist = updatedDist[1];
-        // console.log("End res", topDist, leftDist)
+        let updatedDist = findClosestBlock(topDist, leftDist);
+        topDist = updatedDist[0];
+        leftDist = updatedDist[1];
         for(let action of activeActions) {
           if(`${action.props.item.id}${action.props.dataId}` === draggedElement) {
             tmpItem = action.props.item;
@@ -91,20 +107,21 @@ export default function MidArea(props) {
             tmpActions.push(action)
           }
         }
-        setActiveActions([...tmpActions,
-          <ActionButton
-            item={tmpItem}
-            color={tmpColor}
-            setDraggedElement={setDraggedElement}
-            setDragParent={setDragParent}
-            dataId={tmpDataId}
-            canvasContext={canvasContext}
-            updateSpriteStyle={updateSpriteStyle}
-            updateActionList={updateActionList}
-            topDist={topDist}
-            leftDist={leftDist}
-            key={tmpDataId} />
-      ]);
+				tmpActions = [
+					...tmpActions,
+					<ActionButton
+						item={tmpItem}
+						color={tmpColor}
+						setDraggedElement={setDraggedElement}
+						setDragParent={setDragParent}
+						dataId={tmpDataId}
+						updateSpriteStyle={updateSpriteStyle}
+						updateActionList={updateActionList}
+						topDist={topDist}
+						leftDist={leftDist}
+						key={tmpDataId} />
+				];
+				setActiveActions(tmpActions);
     }
   }
 

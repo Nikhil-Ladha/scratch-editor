@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import CatSpriteImg from "../assets/sprite.svg";
-import Icon from "./Icon";
 
 export default function PreviewArea(props) {
 
@@ -19,9 +18,11 @@ export default function PreviewArea(props) {
       "y": 100,
       "w": 60,
       "h": 75,
+      "size": 100,
       "angle": 0, // in degrees
       "show": true,
-      "clones": []
+      "clones": [],
+      "wait": 0,
     });
     updateSpriteImg(img);
     setCanvasContext(context);
@@ -29,6 +30,7 @@ export default function PreviewArea(props) {
 
   useEffect(() => {
     for(let action of actionList) {
+      canvasContext.clearRect(0, 0, 400, 800);
       let originX = currentSpriteStyle["w"]/2 + currentSpriteStyle["x"];
       let originY = currentSpriteStyle["h"]/2 + currentSpriteStyle["y"];
       switch(action) {
@@ -37,17 +39,45 @@ export default function PreviewArea(props) {
         case "goto_position":
         case "set_x":
         case "set_y":
-        case "show":
         case "change_size":
-        case "set_size":
+        case "show":
         case "create_clone":
         case "delete_clone":
+        case "event_self_clicked":
           if(currentSpriteStyle["show"]) {
             canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]);
-            if(currentSpriteStyle["clones"].length) {
-              for(let i=0; i<currentSpriteStyle["clones"].length; i++) {
-                canvasContext.drawImage(spriteImg, currentSpriteStyle["clones"][i]["x"], currentSpriteStyle["clones"][i]["y"], currentSpriteStyle["clones"][i]["w"], currentSpriteStyle["clones"][i]["h"]);
-              }
+          }
+          if(currentSpriteStyle["clones"].length) {
+            for(let i=0; i<currentSpriteStyle["clones"].length; i++) {
+              canvasContext.drawImage(spriteImg, currentSpriteStyle["clones"][i]["x"], currentSpriteStyle["clones"][i]["y"], currentSpriteStyle["clones"][i]["w"], currentSpriteStyle["clones"][i]["h"]);
+            }
+          }
+          break;
+        case "set_size":
+          if(currentSpriteStyle["show"]) {
+            canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], (60*currentSpriteStyle["size"])/100, (75*currentSpriteStyle["size"])/100);
+          }
+          if(currentSpriteStyle["clones"].length) {
+            for(let i=0; i<currentSpriteStyle["clones"].length; i++) {
+              canvasContext.drawImage(spriteImg, currentSpriteStyle["clones"][i]["x"], currentSpriteStyle["clones"][i]["y"], currentSpriteStyle["clones"][i]["w"], currentSpriteStyle["clones"][i]["h"]);
+            }
+          }
+          break;
+        case "wait_n_secs":
+          let currentDate = new Date();
+          currentDate.setSeconds(currentDate.getSeconds() + currentSpriteStyle["wait"]);
+          while(true) {
+            let tmpDate = new Date();
+            if(tmpDate >= currentDate) {
+              break;
+            }
+          }
+          if(currentSpriteStyle["show"]) {
+            canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]);
+          }
+          if(currentSpriteStyle["clones"].length) {
+            for(let i=0; i<currentSpriteStyle["clones"].length; i++) {
+              canvasContext.drawImage(spriteImg, currentSpriteStyle["clones"][i]["x"], currentSpriteStyle["clones"][i]["y"], currentSpriteStyle["clones"][i]["w"], currentSpriteStyle["clones"][i]["h"]);
             }
           }
           break;
@@ -60,10 +90,17 @@ export default function PreviewArea(props) {
             canvasContext.save();
             canvasContext.reset();
           }
+          if(currentSpriteStyle["clones"].length) {
+            for(let i=0; i<currentSpriteStyle["clones"].length; i++) {
+              canvasContext.drawImage(spriteImg, currentSpriteStyle["clones"][i]["x"], currentSpriteStyle["clones"][i]["y"], currentSpriteStyle["clones"][i]["w"], currentSpriteStyle["clones"][i]["h"]);
+            }
+          }
           canvasContext.translate(originX, originY);
 					canvasContext.rotate(currentSpriteStyle["angle"] * Math.PI / 180);
           canvasContext.translate(-originX, -originY);
-          currentSpriteStyle["show"] ? canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]) : "";
+          if(currentSpriteStyle["show"]) {
+            canvasContext.drawImage(spriteImg, currentSpriteStyle["x"], currentSpriteStyle["y"], currentSpriteStyle["w"], currentSpriteStyle["h"]);
+          }
           if(action == "point_direction") {
             canvasContext.restore();
           }
@@ -74,14 +111,9 @@ export default function PreviewArea(props) {
   }, [currentSpriteStyle]);
 
   return (
-    <>
-      <div className="p-1 h-8 stride">
-        <Icon name="flag" size={25} className="text-green-600 mx-2"/>
-      </div>
-      <div className="w-full flex-none h-full overflow-y-auto p-2">
-        <canvas ref={canvasRef} width="400" height="800" />
-        <img src={CatSpriteImg} width="50" height="50" ref={spriteImage} className="hidden"/>
-      </div>
-    </>
+    <div className="w-full flex-none h-full overflow-y-auto p-2">
+      <canvas ref={canvasRef} width="400" height="800" />
+      <img src={CatSpriteImg} width="50" height="50" ref={spriteImage} className="hidden"/>
+    </div>
   );
 }

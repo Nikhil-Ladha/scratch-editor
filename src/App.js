@@ -35,7 +35,6 @@ export default function App() {
             setDragParent={setDragParent}
             blockCounter={blockCounter}
             updateBlockCounter={updateBlockCounter}
-            canvasContext={canvasContext}
             updateSpriteStyle={updateSpriteStyle}
             updateActionList={updateActionList}
           />

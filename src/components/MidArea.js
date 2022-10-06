@@ -33,15 +33,15 @@ export default function MidArea(props) {
     let closestY = top, closestX = left;
 		for(let action of activeActions) {
       let tmpY = action.props.topDist;
-      let tmpX = action.props.leftDist;
+      let tmpX = Math.abs(action.props.leftDist - left);
       if(`${action.props.item.id}${action.props.dataId}` != draggedElement) {
-        if(tmpY - top <= 50 && tmpY - top >= 0 && (!action.props.item.id.includes("event"))) {    // 50px, as it's bit less than 2x of block height
+        if(tmpY - top <= 50 && tmpY - top >= 0 && tmpX <= 50 && (!action.props.item.id.includes("event"))) {    // 50px, as it's bit less than 2x of block height
           closestY = tmpY - 29;   // Allow breathing space of 1px
-          closestX = tmpX;
+          closestX = action.props.leftDist;
           break;
-        } else if(top - tmpY <= 50 && top - tmpY >= 0 && (!draggedElement.includes("event"))) {
+        } else if(top - tmpY <= 50 && top - tmpY >= 0 && tmpX <= 50 && (!draggedElement.includes("event"))) {
           closestY = tmpY + 29;
-          closestX = tmpX;
+          closestX = action.props.leftDist;
           break;
         }
       }
